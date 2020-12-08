@@ -36,6 +36,9 @@ public class User implements UserDetails {
     @Column(name = "email", nullable = false)
     private String email;
 
+    @Column(name = "payment", nullable = false)
+    private Double payment;
+
     @Column(name = "enabled", nullable = false)
     private boolean enabled;
 
@@ -102,6 +105,15 @@ public class User implements UserDetails {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public double getPayment() {
+        return payment;
+    }
+
+    public void setPayment(double payment) {
+        this.payment = payment;
+    }
+
 
     public Timestamp getLastPasswordResetDate() {
         return lastPasswordResetDate;

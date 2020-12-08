@@ -15,6 +15,7 @@ public class UserDTO {
     private String firstName;
     private String lastName;
     private String email;
+    private double payment;
     private boolean enabled;
     private List<String> authorities;
     private UserTokenDTO token;
@@ -26,6 +27,7 @@ public class UserDTO {
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
         this.email = user.getEmail();
+        this.payment = user.getPayment();
         this.enabled = user.isEnabled();
         this.token = null;
 
@@ -96,4 +98,13 @@ public class UserDTO {
     public void setToken(UserTokenDTO token) {
         this.token = token;
     }
+
+    public double getPayment() {
+        return payment;
+    }
+
+    public void setPayment(double payment) {
+        this.payment = payment;
+    }
+
 }

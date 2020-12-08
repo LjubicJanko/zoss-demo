@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { from } from 'rxjs';
+import { UserService } from '../service/users.service';
 
 @Component({
   selector: 'app-admin-page',
@@ -6,10 +9,18 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./admin-page.component.css']
 })
 export class AdminPageComponent implements OnInit {
+  users: [];
 
-  constructor() { }
+  constructor(
+    private userService: UserService,
+    private router: Router
+  ) { }
 
   ngOnInit() {
+    this.userService.getAll().subscribe(response => {
+      this.users = response;
+      console.log(this.users)
+    })
   }
 
 }

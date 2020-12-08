@@ -1,5 +1,17 @@
-<div>
-    <h1 class="admin-header">
-      This page can be accessed by admin
-    </h1>
-  </div>
+<table id="usersTable">
+  <tr>
+      <th>First name</th>
+      <th>Last name</th>
+      <th>Email</th>
+      <th>Username</th>
+      <th>Payment</th>
+  </tr>
+  <tr *ngFor="let user of users">
+      <td>{{user.firstName}}</td>
+      <td>{{user.lastName}}</td>
+      <td>{{user.email}}</td>
+      <td>{{user.username}}</td>
+      <td>{{user.payment}}</td>
+  </tr>
+</table>
+

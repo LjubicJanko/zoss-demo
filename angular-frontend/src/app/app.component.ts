@@ -16,14 +16,4 @@ export class AppComponent {
      
   }
 
-  helloWorld() {
-    this.sendRequest()
-      .subscribe(res => {
-        console.log(res);
-      }); 
-  }
-
-  sendRequest(): Observable<any> {
-    return this.http.get(this.url, {responseType: 'text'}); 
-  }
 }

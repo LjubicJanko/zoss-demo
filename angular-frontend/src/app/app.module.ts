@@ -6,12 +6,12 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 
 import { HTTP_INTERCEPTORS, HttpClientModule, HttpClient, HttpBackend } from '@angular/common/http';
-import { FreeDaysComponent } from './free-days/free-days.component';
 import { AdminPageComponent } from './admin-page/admin-page.component';
 import { LoginComponent } from './login/login.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { FormsModule } from '@angular/forms';
 import { CommonStoreModule } from './service/common-store.module';
+import { PaymentsComponent } from './payments/payments.component';
 
 declare global {
   interface Window { analytics: any; }
@@ -31,8 +31,8 @@ const routes: Routes = [
     component: LoginComponent
   },
   {
-    path: 'freeDays',
-    component: FreeDaysComponent
+    path: 'payment',
+    component: PaymentsComponent
   }
 ];
 
@@ -42,10 +42,10 @@ const routes: Routes = [
   declarations: [
     AppComponent,
     HomeComponent,
-    FreeDaysComponent,
     LoginComponent,
     AdminPageComponent,
-    NavbarComponent
+    NavbarComponent,
+    PaymentsComponent
   ],
   imports: [
     HttpClientModule,
