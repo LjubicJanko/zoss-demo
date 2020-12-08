@@ -24,6 +24,8 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit() {
 
+    this.role = "ROLE_USER";
+
     this.roleSub = this.authQuery.role$.subscribe((role) => {
       this.role = role;
       if(this.role == 'ROLE_USER' || this.role == 'ROLE_ADMIN') {
@@ -47,6 +49,6 @@ export class NavbarComponent implements OnInit {
   }
 
   isUser() {
-    return this.role === "ROLE_REGISTERED";
+    return this.role === "ROLE_USER";
   }
 }
