@@ -1,0 +1,24 @@
+
+.app-link {
+  font-size: 24px;
+  margin-top: 20px;
+  color: #DC143C;
+}
+
+.header-ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.header-ul > li {
+  display: inline;
+  padding: 30px;
+  font-size: 26px;
+}
+
+.header-ul > li > a {
+  color: #DC143C;
+}
+
+
