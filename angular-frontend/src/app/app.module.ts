@@ -1,60 +1,46 @@
+import { NavbarModule } from './components/navbar/navbar.module';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AppComponent } from './app.component';
-import { HomeComponent } from './home/home.component';
+import { HomeComponent } from './components/home/home.component';
 
 import { HTTP_INTERCEPTORS, HttpClientModule, HttpClient, HttpBackend } from '@angular/common/http';
-import { AdminPageComponent } from './admin-page/admin-page.component';
-import { LoginComponent } from './login/login.component';
-import { NavbarComponent } from './navbar/navbar.component';
+import { AdminPageComponent } from './components/admin-page/admin-page.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
 import { FormsModule } from '@angular/forms';
-import { CommonStoreModule } from './service/common-store.module';
-import { PaymentsComponent } from './payments/payments.component';
+import { CommonStoreModule } from './shared/service/common-store.module';
+import { HttpApiInterceptor } from './shared/config';
+import { AppRoutingModule } from './router/app-routing.module';
+import { CommonModule } from '@angular/common';
+import { MainModule } from './shared/modules/main.module';
 
 declare global {
   interface Window { analytics: any; }
 }
 
-const routes: Routes = [
-  {
-    path: '',
-    component: HomeComponent
-  },
-  {
-    path: 'adminPage',
-    component: AdminPageComponent
-  },
-  {
-    path: 'login',
-    component: LoginComponent
-  },
-  {
-    path: 'payment',
-    component: PaymentsComponent
-  }
-];
-
-
-
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    LoginComponent,
     AdminPageComponent,
-    NavbarComponent,
-    PaymentsComponent
+    NavbarComponent
   ],
   imports: [
+    MainModule,
+    CommonModule,
+    AppRoutingModule,
     HttpClientModule,
-    BrowserModule,
+    NavbarModule,
+    RouterModule,
+    BrowserModule.withServerTransition({ appId: 'angular-frontend' }),
     FormsModule,
     CommonStoreModule,
-    RouterModule.forRoot(routes)
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: HttpApiInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

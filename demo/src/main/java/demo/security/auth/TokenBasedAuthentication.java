@@ -1,8 +1,12 @@
 package demo.security.auth;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 
+@Getter
+@Setter
 public class TokenBasedAuthentication extends AbstractAuthenticationToken {
 
     private static final long serialVersionUID = 1L;
@@ -13,14 +17,6 @@ public class TokenBasedAuthentication extends AbstractAuthenticationToken {
     public TokenBasedAuthentication(UserDetails principle) {
         super(principle.getAuthorities());
         this.principle = principle;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
     }
 
     @Override
@@ -34,7 +30,7 @@ public class TokenBasedAuthentication extends AbstractAuthenticationToken {
     }
 
     @Override
-    public UserDetails getPrincipal() {
+    public Object getPrincipal() {
         return principle;
     }
 }

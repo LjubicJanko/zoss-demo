@@ -1,0 +1,10 @@
+
+
+java:S1130K"xRemove the declaration of thrown exception 'demo.exception.exceptions.ApiRequestException' which is a runtime exception.(ๅ๙ื๘ÿÿÿÿ8ฒ๊งไ.
+G
+java:S5411i"*Use the primitive boolean expression here.(๗จรÿ8ฒ๊งไ.
+ฉ
+java:S1130."’Remove the declaration of thrown exception 'org.springframework.security.core.userdetails.UsernameNotFoundException' which is a runtime exception.(ฬร
+
+java:S1130d"xRemove the declaration of thrown exception 'demo.exception.exceptions.ApiRequestException' which is a runtime exception.(ด๛üÿÿÿÿ8ฒ๊งไ.
+k	java:S116"QRename this field "LOGGER" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(๙่ผüÿÿÿÿ

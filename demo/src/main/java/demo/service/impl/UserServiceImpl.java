@@ -1,46 +1,148 @@
 package demo.service.impl;
 
-import demo.dto.response.UserDTO;
-import demo.exception.exceptions.ApiRequestException;
+import demo.dto.request.UserDTO;
+import demo.dto.request.UserEditDTO;
+import demo.dto.request.UserRegistrationDTO;
+import demo.exceptions.*;
+import demo.model.AbstractUser;
+import demo.model.Admin;
+import demo.model.Authority;
 import demo.model.User;
+import demo.repository.AdminRepository;
+import demo.repository.AuthorityRepository;
 import demo.repository.UserRepository;
 import demo.service.UserService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import demo.util.ObjectMapperUtils;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static demo.config.Constants.*;
 
 @Service
-@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
+    private UserRepository userRepository;
+    private AdminRepository adminRepository;
+    private AuthorityRepository authorityRepository;
+
+    public UserServiceImpl(UserRepository userRepository, AdminRepository adminRepository, AuthorityRepository authorityRepository) {
+        this.userRepository = userRepository;
+        this.adminRepository = adminRepository;
+        this.authorityRepository = authorityRepository;
+    }
 
     @Override
-    public UserDTO findById(Long id) throws ApiRequestException {
-        try {
-            User user = userRepository.findById(id).get();
-            return new UserDTO(user);
-        } catch (NoSuchElementException e) {
-            throw new ApiRequestException("User with id '" + id + "' doesn't exist.");
+    public User create(UserRegistrationDTO userRegistrationDTO) throws UsernameAlreadyExist, UsernameNotValid, PasswordNotValid, EmailNotValid, EmailAlreadyExist, AuthorityDoesNotExist {
+        Optional<User> userFound = userRepository.findOneByUsername(userRegistrationDTO.getUsername());
+        Optional<Admin> adminFound = adminRepository.findOneByUsername(userRegistrationDTO.getUsername());
+
+        if (userFound.isPresent() || adminFound.isPresent()) {
+            throw new UsernameAlreadyExist();
+        }
+
+        userFound = userRepository.findOneByEmail(userRegistrationDTO.getEmail());
+
+        if (userFound.isPresent()) {
+            throw new EmailAlreadyExist();
+        }
+
+        if (!userRegistrationDTO.getUsername().matches(USERNAME_REGEX)) {
+            throw new UsernameNotValid();
+        }
+
+        if (!userRegistrationDTO.getPassword().matches(PASSWORD_REGEX)) {
+            throw new PasswordNotValid();
+        }
+
+        if (!userRegistrationDTO.getEmail().matches(EMAIL_REGEX)) {
+            throw new EmailNotValid();
+        }
+
+        User newUser = new User(userRegistrationDTO.getUsername(),
+                userRegistrationDTO.getPassword(),
+                userRegistrationDTO.getFirstName(),
+                userRegistrationDTO.getLastName(),
+                userRegistrationDTO.getEmail());
+
+        List<Authority> authorities = new ArrayList<Authority>();
+
+        Optional<Authority> authority = authorityRepository.findOneByName("ROLE_REGISTERED");
+        if (!authority.isPresent()) {
+            throw new AuthorityDoesNotExist("ROLE_REGISTERED");
+        }
+
+        userRepository.save(newUser);
+
+        authorities.add(authority.get());
+        newUser.setAuthorities(authorities);
+
+        return userRepository.save(newUser);
+    }
+
+    @Override
+    public AbstractUser findByUsername(String username) throws UserNotFound {
+        Optional<User> u = userRepository.findOneByUsername(username);
+        if (u.isPresent()) {
+            return u.get();
+        } else {
+            Optional<Admin> a = adminRepository.findOneByUsername(username);
+            if (a.isPresent()) {
+                return a.get();
+            }
+            throw new UserNotFound();
         }
     }
 
     @Override
-    public UserDTO findByUsername(String username) throws ApiRequestException {
-        try {
-            User user = userRepository.findByUsername(username);
-            return new UserDTO(user);
-        } catch (UsernameNotFoundException e) {
-            throw new ApiRequestException("User with username '" + username + "' doesn't exist.");
+    public User editUser(UserEditDTO userEditDTO, String username) throws UserNotFound, EmailNotValid, FirstNameNotValid, LastNameNotValid {
+
+        Optional<User> userOptional = userRepository.findOneByUsername(username);
+
+        if (!userOptional.isPresent()) {
+            throw new UserNotFound();
+        } else {
+            User user = userOptional.get();
+            if (userEditDTO.getEmail() != null) {
+                if (!userEditDTO.getEmail().matches(EMAIL_REGEX)) {
+                    throw new EmailNotValid();
+                }
+                user.setEmail(userEditDTO.getEmail());
+            }
+
+            if (userEditDTO.getFirstName() != null) {
+                if (userEditDTO.getFirstName().matches(WHITESPACES_REGEX)) {
+                    throw new FirstNameNotValid();
+                }
+                user.setFirstName(userEditDTO.getFirstName());
+            }
+
+            if (userEditDTO.getLastName() != null) {
+                if (userEditDTO.getLastName().matches(WHITESPACES_REGEX)) {
+                    throw new LastNameNotValid();
+                }
+                user.setLastName(userEditDTO.getLastName());
+            }
+
+            userRepository.save(user);
+            return user;
         }
+
     }
 
     @Override
-    public List<UserDTO> findAll() {
-        return userRepository.findAll().stream()
-                .map(user -> new UserDTO(user)).collect(Collectors.toList());
+    public List<UserDTO> getAll() {
+        List<UserDTO> users = ObjectMapperUtils.mapAll(userRepository.findAll(), UserDTO.class);
+        List<UserDTO> admins = ObjectMapperUtils.mapAll(adminRepository.findAll(), UserDTO.class);
+
+        return Stream.of(users, admins)
+                .flatMap(x -> x.stream())
+                .collect(Collectors.toList());
     }
+
+
 }

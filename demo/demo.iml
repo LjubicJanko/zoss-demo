@@ -137,5 +137,6 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.projectlombok:lombok:1.18.12" level="project" />
     <orderEntry type="library" name="Maven: javax.validation:validation-api:2.0.1.Final" level="project" />
     <orderEntry type="library" name="Maven: org.modelmapper:modelmapper:2.3.0" level="project" />
+    <orderEntry type="library" name="Maven: joda-time:joda-time:2.10.5" level="project" />
   </component>
 </module>

@@ -1,8 +1,7 @@
-export const environment = {
-  DefaultLanguage: "en",
+import { Environment } from "./environment.interface";
+
+export const environment: Environment = {
   production: true,
-  development: false,
-  environmentName:"PROD",
-  ResultsPerPage:[5,10,25,50,75,100],
-  baseURL:null
+  apiUrl: 'https://reqres.in/api',
+  env: 'production'
 };

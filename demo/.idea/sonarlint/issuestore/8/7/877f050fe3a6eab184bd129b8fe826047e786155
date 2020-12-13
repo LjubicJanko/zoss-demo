@@ -1,0 +1,21 @@
+
+`
+java:S2259±"DA "NullPointerException" could be thrown; "claims" is nullable here.(êë…âüÿÿÿÿ
+`
+java:S2259"DA "NullPointerException" could be thrown; "claims" is nullable here.(Á”–¬ùÿÿÿÿ
+W	java:S125¹"<This block of commented-out lines of code should be removed.(ô§áıÿÿÿÿ
+o	java:S116"URename this field "EXPIRES_IN" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Èúçúÿÿÿÿ
+m	java:S116"SRename this field "APP_NAME" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÚÓ‰şÿÿÿÿ
+p	java:S116!"VRename this field "AUTH_HEADER" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(™ş¼®üÿÿÿÿ
+f	java:S116"QRename this field "SECRET" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(–Ş‰½
+x	java:S116+"^Rename this field "SIGNATURE_ALGORITHM" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¯‹’³ıÿÿÿÿ
+Z
+java:S2259S"DA "NullPointerException" could be thrown; "claims" is nullable here.(·Œµ“
+Z
+java:S2259¦"DA "NullPointerException" could be thrown; "claims" is nullable here.(¨£¿
+`
+java:S2259›"DA "NullPointerException" could be thrown; "claims" is nullable here.(óúÊöøÿÿÿÿ
+v	java:S116"\Rename this field "MOBILE_EXPIRES_IN" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(·ìŞ™ıÿÿÿÿ
+Q	java:S125I"<This block of commented-out lines of code should be removed.(Í‹ƒı
+K
+java:S1144;"5Remove this unused private "generateAudience" method.(Ô–ˆô

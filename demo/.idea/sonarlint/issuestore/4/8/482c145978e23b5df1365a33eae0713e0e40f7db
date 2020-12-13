@@ -1,0 +1,9 @@
+
+R
+java:S3655"7Call "Optional#isPresent()" before accessing the value.(‰ÎÒ”úÿÿÿÿ
+“
+java:S1130 "xRemove the declaration of thrown exception 'demo.exception.exceptions.ApiRequestException' which is a runtime exception.(‹¹•Ÿúÿÿÿÿ
+“
+java:S1130"xRemove the declaration of thrown exception 'demo.exception.exceptions.ApiRequestException' which is a runtime exception.(ð°ï’ÿÿÿÿÿ
+H
+java:S1612,",Replace this lambda with a method reference.(¸–×J8äÕ¨Žä.

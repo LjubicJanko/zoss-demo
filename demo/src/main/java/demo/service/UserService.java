@@ -1,16 +1,22 @@
 package demo.service;
 
 
-
-import demo.dto.response.UserDTO;
+import demo.dto.request.UserDTO;
+import demo.dto.request.UserEditDTO;
+import demo.dto.request.UserRegistrationDTO;
+import demo.exceptions.*;
+import demo.model.AbstractUser;
+import demo.model.User;
 
 import java.util.List;
 
 public interface UserService {
 
-    UserDTO findById(Long id);
+    User create(UserRegistrationDTO userRegistrationDTO) throws UsernameAlreadyExist, UsernameNotValid, PasswordNotValid, EmailNotValid, EmailAlreadyExist, AuthorityDoesNotExist;
 
-    UserDTO findByUsername(String username);
+    AbstractUser findByUsername(String username) throws UserNotFound;
 
-    List<UserDTO> findAll();
+    User editUser(UserEditDTO userEditDTO, String username) throws UserNotFound, EmailNotValid, FirstNameNotValid, LastNameNotValid;
+
+    List<UserDTO> getAll();
 }

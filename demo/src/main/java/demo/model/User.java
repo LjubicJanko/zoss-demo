@@ -1,49 +1,29 @@
 package demo.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import javax.validation.constraints.NotNull;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
-@Table(name = "users")
-public class User implements UserDetails {
+@Table(name="users")
+public class User extends AbstractUser implements UserDetails {
 
-    private static final long serialVersionUID = 1L;
-
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(name = "username", unique = true, nullable = false)
-    private String username;
-
-    @Column(name = "password", nullable = false)
-    private String password;
-
-    @Column(name = "first_name", nullable = false)
-    private String firstName;
-
-    @Column(name = "last_name", nullable = false)
-    private String lastName;
-
-    @Column(name = "email", nullable = false)
+    @NotNull
     private String email;
 
-    @Column(name = "payment", nullable = false)
-    private Double payment;
-
-    @Column(name = "enabled", nullable = false)
-    private boolean enabled;
-
-    @Column(name = "last_password_reset_date")
-    private Timestamp lastPasswordResetDate;
+//    @Column(name = "last_password_reset_date")
+//    private Timestamp lastPasswordResetDate;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "user_authority",
@@ -51,90 +31,20 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
     private List<Authority> authorities;
 
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        Timestamp now = new Timestamp(new Date().getTime());
-        this.setLastPasswordResetDate( now );
-        this.password = password;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public void setAuthorities(List<Authority> authorities) {
-        this.authorities = authorities;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
+    public User(@NotNull String username, @NotNull String password, @NotNull String firstName, @NotNull String lastName, @NotNull String email) {
+        super(username, password, firstName, lastName);
         this.email = email;
     }
 
-    public double getPayment() {
-        return payment;
-    }
-
-    public void setPayment(double payment) {
-        this.payment = payment;
-    }
-
-
-    public Timestamp getLastPasswordResetDate() {
-        return lastPasswordResetDate;
-    }
-
-    public void setLastPasswordResetDate(Timestamp lastPasswordResetDate) {
-        this.lastPasswordResetDate = lastPasswordResetDate;
-    }
+//    public void setPassword(String password) {
+//        Timestamp now = new Timestamp(DateTime.now().getMillis());
+//        this.setLastPasswordResetDate( now );
+//        this.password = password;
+//    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.authorities;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
     }
 
     @JsonIgnore
@@ -152,6 +62,12 @@ public class User implements UserDetails {
     @JsonIgnore
     @Override
     public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isEnabled() {
         return true;
     }
 }

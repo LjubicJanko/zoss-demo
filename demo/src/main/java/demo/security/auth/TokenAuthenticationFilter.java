@@ -1,9 +1,11 @@
 package demo.security.auth;
 
 import demo.security.TokenUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -12,21 +14,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-/* Filter that will intercept every request to the services */
+@Component
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
+    @Autowired
     private TokenUtils tokenUtils;
-    private UserDetailsService userDetailsService;
 
-    public TokenAuthenticationFilter(TokenUtils tokenUtils, UserDetailsService userDetailsService) {
-        this.tokenUtils = tokenUtils;
-        this.userDetailsService = userDetailsService;
-    }
+    @Autowired
+    private UserDetailsService userDetailsService;
 
     @Override
     public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {
-
         String username;
         String authToken = tokenUtils.getToken(request);
 
@@ -36,9 +35,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
             if (username != null) {
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-                // Is token valid
                 if (tokenUtils.validateToken(authToken, userDetails)) {
-                    // Create authentication
                     TokenBasedAuthentication authentication = new TokenBasedAuthentication(userDetails);
                     authentication.setToken(authToken);
                     SecurityContextHolder.getContext().setAuthentication(authentication);
