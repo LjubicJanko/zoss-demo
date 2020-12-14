@@ -22,4 +22,6 @@ public interface UserService {
     List<UserDTO> getAll();
 
     List<CommentDto> getComments(Long id);
+
+    CommentDto addNewComment(Long id, String content);
 }

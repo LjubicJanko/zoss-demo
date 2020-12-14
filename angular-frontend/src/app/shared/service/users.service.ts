@@ -8,6 +8,7 @@ import { environment } from 'src/environments/environment';
 const ENDPOINTS = {
   GET_ALL: '/user/all',
   GET_COMMENTS: '/user/comments',
+  ADD_COMMENTS: '/user/comment',
 };
 
 @Injectable({
@@ -41,6 +42,16 @@ export class UserService {
 
     return this.http.get<any>(ENDPOINTS.GET_COMMENTS).pipe(
       tap((data) => {
+        console.log(data.comments);
+      })
+    )
+  }
+
+  addComment(addComment: any): Observable<any> {
+    console.log(addComment);
+    return this.http.post<any>(ENDPOINTS.ADD_COMMENTS, addComment).pipe(
+      tap((data) => {
+        alert("success")
         console.log(data.comments);
       })
     )

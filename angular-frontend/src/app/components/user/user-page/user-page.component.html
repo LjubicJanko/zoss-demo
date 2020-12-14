@@ -13,8 +13,29 @@
     </tr>
   </table>
    -->
-  
-  <table id="userPageTable">
+
+
+<mat-card class="leaveComment-card">
+    <mat-card-header>
+        <mat-icon>comment</mat-icon>
+        <mat-card-title>New Comment</mat-card-title>
+        <mat-card-subtitle>type anything</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content style="text-align: center;">
+        <input hidden="true" [(ngModel)]="userId">
+        <mat-form-field appearance="fill">
+            <mat-label>Leave a comment</mat-label>
+            <textarea id="textArea" class="form-control" matInput placeholder="Ex. It makes me feel..."
+                [(ngModel)]="newComment"></textarea>
+        </mat-form-field>
+    </mat-card-content>
+    <mat-card-actions>
+        <button id="addComment-button" [disabled]="isThereAComment()" mat-raised-button (click)="submitComment()">Add
+            new comment</button>
+    </mat-card-actions>
+</mat-card>
+
+<table id="userPageTable">
     <tr>
         <th>Id</th>
         <th>Content</th>
@@ -23,5 +44,4 @@
         <td>{{comment.id}}</td>
         <td>{{comment.content}}</td>
     </tr>
-
-  </table>
+</table>

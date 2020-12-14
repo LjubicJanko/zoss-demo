@@ -1,5 +1,6 @@
 package demo.controller;
 
+import demo.dto.request.AddCommentDto;
 import demo.dto.request.UserDTO;
 import demo.dto.request.UserEditDTO;
 import demo.dto.request.UserWithAuthoritiesDTO;
@@ -9,7 +10,6 @@ import demo.exceptions.LastNameNotValid;
 import demo.exceptions.UserNotFound;
 import demo.model.AbstractUser;
 import demo.model.User;
-import demo.repository.AdminRepository;
 import demo.security.auth.TokenBasedAuthentication;
 import demo.service.UserService;
 import demo.util.ObjectMapperUtils;
@@ -73,5 +73,10 @@ public class UsersController {
         Long id = ((User) ((TokenBasedAuthentication) auth).getPrinciple()).getId();
 
         return new ResponseEntity(userService.getComments(id), HttpStatus.OK);
+    }
+
+    @PostMapping("/comment")
+    public ResponseEntity addNewComment(@RequestBody AddCommentDto addCommentDto) {
+        return new ResponseEntity(userService.addNewComment(addCommentDto.getUserId(), addCommentDto.getContent()), HttpStatus.OK);
     }
 }

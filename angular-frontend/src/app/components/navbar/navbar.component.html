@@ -4,7 +4,9 @@
         <button mat-icon-button color="primary" aria-label="Home" routerLink="/">
             <mat-icon>home</mat-icon>
         </button>
-        <h1>Welcome {{firstName}}</h1>
+        <div *ngIf="loggedIn">
+            <h1 *ngIf="loggedIn">Welcome {{firstName}}</h1>
+        </div>
         <span class="navbar-spacer"></span>
         <div>
             <button *ngIf="isUser()" id="userPage-button" mat-icon-button color="primary" aria-label="User Page" routerLink="/user">

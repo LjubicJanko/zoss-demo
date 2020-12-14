@@ -5,10 +5,7 @@ import demo.dto.request.UserDTO;
 import demo.dto.request.UserEditDTO;
 import demo.dto.request.UserRegistrationDTO;
 import demo.exceptions.*;
-import demo.model.AbstractUser;
-import demo.model.Admin;
-import demo.model.Authority;
-import demo.model.User;
+import demo.model.*;
 import demo.repository.AdminRepository;
 import demo.repository.AuthorityRepository;
 import demo.repository.CommentRepository;
@@ -147,6 +144,21 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<CommentDto> getComments(Long id) {
         return ObjectMapperUtils.mapAll(commentRepository.findAllByUserId(id), CommentDto.class);
+    }
+
+    @Override
+    public CommentDto addNewComment(Long id, String content) {
+        Optional<User> user = userRepository.findById(id);
+        Comment comment = new Comment();
+
+        if(user.isPresent()) {
+            comment = new Comment(content, user.get());
+            comment = commentRepository.save(comment);
+            user.get().getComments().add(comment);
+            userRepository.save(user.get());
+        }
+
+        return ObjectMapperUtils.map(comment, CommentDto.class);
     }
 
 

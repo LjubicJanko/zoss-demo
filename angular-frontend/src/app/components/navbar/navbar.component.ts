@@ -26,10 +26,6 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit() {
 
-    this.userSub = this.authQuery.user$.subscribe((user) => {
-      this.firstName = user.firstName;
-    })
-
     this.isLoggedInSub = this.authQuery.isLoggedIn$.subscribe((isLoggedIn) => {
       this.loggedIn = isLoggedIn;
     });
@@ -41,6 +37,13 @@ export class NavbarComponent implements OnInit {
     this.isAdminInSub = this.authQuery.isAdmin$.subscribe((admin) => {
       this.admin = admin
     })
+    if (this.loggedIn) {
+      this.userSub = this.authQuery.user$.subscribe((user) => {
+        if(user != null) {
+          this.firstName = user.firstName;
+        }
+      })
+    }
   }
 
   logout() {
@@ -48,7 +51,7 @@ export class NavbarComponent implements OnInit {
     this.loggedIn = false;
     this.router.navigate(['/'])
   }
-  
+
   isAdmin() {
     return this.role === "ROLE_ADMIN";
   }
@@ -56,7 +59,7 @@ export class NavbarComponent implements OnInit {
   isUser() {
     return this.role === "ROLE_REGISTERED";
   }
-  
+
   isRegistrationPage() {
     return this.router.url === "/register";
   }

@@ -11,7 +11,7 @@ insert into users (id, first_name, last_name, password, username, email) values 
 insert into users (id, first_name, last_name, password, username, email) values (2, "Baby", "Doe", "$2b$10$MbpAOLT5iU2OTOFMOBO4C.lCLUogU0VY3K.myRwMVuI.Cgi3prINO", "baby", "baby.doe@gmail.com" );
 
 insert into user_authority(authority_id, user_id) values (1, 0);
-insert into user_authority(authority_id, user_id) values (2, 0);
+insert into user_authority(authority_id, user_id) values (1, 2);
 
 
 
