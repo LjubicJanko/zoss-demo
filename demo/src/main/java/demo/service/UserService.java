@@ -1,6 +1,7 @@
 package demo.service;
 
 
+import demo.dto.request.CommentDto;
 import demo.dto.request.UserDTO;
 import demo.dto.request.UserEditDTO;
 import demo.dto.request.UserRegistrationDTO;
@@ -19,4 +20,6 @@ public interface UserService {
     User editUser(UserEditDTO userEditDTO, String username) throws UserNotFound, EmailNotValid, FirstNameNotValid, LastNameNotValid;
 
     List<UserDTO> getAll();
+
+    List<CommentDto> getComments(Long id);
 }

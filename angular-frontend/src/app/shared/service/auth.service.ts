@@ -38,11 +38,8 @@ export class AuthService {
    * @returns Observable<any>
    */
   login(loginDto: LoginDto): Observable<any> {
-    console.log(loginDto);
-
     return this.http.post(ENDPOINTS.LOGIN, loginDto).pipe(
       tap((data: { accessToken: string }) => {
-        console.log(data)
         this.authStore.update((state) => ({
           token: data.accessToken
         }));   
@@ -54,6 +51,7 @@ export class AuthService {
         this.http.get<any>(ENDPOINTS.ME).subscribe(
           res => {
             let userFromResponse = {
+              id: res.id,
               username: res.username,
               firstName: res.firstName,
               lastName: res.lastName,

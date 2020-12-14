@@ -1,5 +1,6 @@
 package demo.service.impl;
 
+import demo.dto.request.CommentDto;
 import demo.dto.request.UserDTO;
 import demo.dto.request.UserEditDTO;
 import demo.dto.request.UserRegistrationDTO;
@@ -10,9 +11,11 @@ import demo.model.Authority;
 import demo.model.User;
 import demo.repository.AdminRepository;
 import demo.repository.AuthorityRepository;
+import demo.repository.CommentRepository;
 import demo.repository.UserRepository;
 import demo.service.UserService;
 import demo.util.ObjectMapperUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -24,17 +27,14 @@ import java.util.stream.Stream;
 import static demo.config.Constants.*;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private UserRepository userRepository;
-    private AdminRepository adminRepository;
-    private AuthorityRepository authorityRepository;
+    private final UserRepository userRepository;
+    private final AdminRepository adminRepository;
+    private final AuthorityRepository authorityRepository;
+    private final CommentRepository commentRepository;
 
-    public UserServiceImpl(UserRepository userRepository, AdminRepository adminRepository, AuthorityRepository authorityRepository) {
-        this.userRepository = userRepository;
-        this.adminRepository = adminRepository;
-        this.authorityRepository = authorityRepository;
-    }
 
     @Override
     public User create(UserRegistrationDTO userRegistrationDTO) throws UsernameAlreadyExist, UsernameNotValid, PasswordNotValid, EmailNotValid, EmailAlreadyExist, AuthorityDoesNotExist {
@@ -142,6 +142,11 @@ public class UserServiceImpl implements UserService {
         return Stream.of(users, admins)
                 .flatMap(x -> x.stream())
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CommentDto> getComments(Long id) {
+        return ObjectMapperUtils.mapAll(commentRepository.findAllByUserId(id), CommentDto.class);
     }
 
 

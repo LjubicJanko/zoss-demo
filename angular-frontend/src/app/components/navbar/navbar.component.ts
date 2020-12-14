@@ -13,10 +13,12 @@ export class NavbarComponent implements OnInit {
   loggedIn: boolean;
   role: string;
   admin: boolean;
+  firstName: string;
 
   isLoggedInSub: Subscription;
   roleSub: Subscription;
-  isAdminInSub: Subscription;j
+  isAdminInSub: Subscription;
+  userSub: Subscription;
 
   constructor(private auth: AuthService,
     private router: Router,
@@ -24,15 +26,16 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit() {
 
+    this.userSub = this.authQuery.user$.subscribe((user) => {
+      this.firstName = user.firstName;
+    })
+
     this.isLoggedInSub = this.authQuery.isLoggedIn$.subscribe((isLoggedIn) => {
       this.loggedIn = isLoggedIn;
     });
 
     this.roleSub = this.authQuery.role$.subscribe((role) => {
       this.role = role;
-      // if(this.role == 'ROLE_USER' || this.role == 'ROLE_ADMIN') {
-      //   this.loggedIn = true;
-      // }
     })
 
     this.isAdminInSub = this.authQuery.isAdmin$.subscribe((admin) => {

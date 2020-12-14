@@ -11,6 +11,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -22,8 +23,8 @@ public class User extends AbstractUser implements UserDetails {
     @NotNull
     private String email;
 
-//    @Column(name = "last_password_reset_date")
-//    private Timestamp lastPasswordResetDate;
+    @OneToMany(mappedBy="user")
+    private Set<Comment> comments;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "user_authority",
@@ -36,11 +37,6 @@ public class User extends AbstractUser implements UserDetails {
         this.email = email;
     }
 
-//    public void setPassword(String password) {
-//        Timestamp now = new Timestamp(DateTime.now().getMillis());
-//        this.setLastPasswordResetDate( now );
-//        this.password = password;
-//    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

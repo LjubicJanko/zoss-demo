@@ -12,7 +12,11 @@ import { UserService } from 'src/app/shared/service/users.service';
 export class UserPageComponent implements OnInit {
 
   user: any;
+  userId: any;
   userSub: Subscription;
+  commentsSub: Subscription;
+
+  comments: any;
 
   constructor(
     private userService: UserService,
@@ -22,6 +26,11 @@ export class UserPageComponent implements OnInit {
   ngOnInit() {
     this.userSub = this.authQuery.user$.subscribe((user) => {
       this.user = user
+      this.userId = user.id;
+    })
+
+    this.commentsSub = this.userService.getComments(this.userId).subscribe((comments) => {
+      this.comments = comments;
     })
   }
 

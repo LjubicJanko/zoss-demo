@@ -10,6 +10,7 @@ import demo.exceptions.UserNotFound;
 import demo.model.AbstractUser;
 import demo.model.User;
 import demo.repository.AdminRepository;
+import demo.security.auth.TokenBasedAuthentication;
 import demo.service.UserService;
 import demo.util.ObjectMapperUtils;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -56,8 +59,19 @@ public class UsersController {
     @GetMapping("/all")
 //    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> getAll() {
-
         return new ResponseEntity<List<UserDTO>>(userService.getAll(), HttpStatus.OK);
     }
 
+    @GetMapping("/comments/{id}")
+    public ResponseEntity<?> getComments(@PathVariable Long id) {
+        return new ResponseEntity<>(userService.getComments(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/comments")
+    public ResponseEntity getCommentsSecure() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Long id = ((User) ((TokenBasedAuthentication) auth).getPrinciple()).getId();
+
+        return new ResponseEntity(userService.getComments(id), HttpStatus.OK);
+    }
 }

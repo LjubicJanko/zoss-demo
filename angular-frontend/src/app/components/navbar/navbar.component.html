@@ -4,6 +4,7 @@
         <button mat-icon-button color="primary" aria-label="Home" routerLink="/">
             <mat-icon>home</mat-icon>
         </button>
+        <h1>Welcome {{firstName}}</h1>
         <span class="navbar-spacer"></span>
         <div>
             <button *ngIf="isUser()" id="userPage-button" mat-icon-button color="primary" aria-label="User Page" routerLink="/user">

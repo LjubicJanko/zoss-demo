@@ -6,7 +6,8 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 const ENDPOINTS = {
-  GET_ALL: '/user/all'
+  GET_ALL: '/user/all',
+  GET_COMMENTS: '/user/comments',
 };
 
 @Injectable({
@@ -33,6 +34,16 @@ export class UserService {
         alert(errorResponse);
       })
     );
+  }
+  getComments(id: any): Observable<any> {
+    /* For unsecure version use unsecureUrl */
+    const unsecureUrl = ENDPOINTS.GET_COMMENTS + '/' + id
+
+    return this.http.get<any>(ENDPOINTS.GET_COMMENTS).pipe(
+      tap((data) => {
+        console.log(data.comments);
+      })
+    )
   }
 
 
