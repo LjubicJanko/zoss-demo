@@ -7,6 +7,8 @@ import { User } from './user.model';
 import { environment } from 'src/environments/environment';
 import { AuthStore } from './auth.store';
 import { LoginDto } from '../../model/dto/LoginDto';
+import { MatSnackBar } from '@angular/material';
+import { SnackbarComponent } from 'src/app/components/common/snackbar/snackbar.component';
 
 const ENDPOINTS = {
   LOGIN: '/auth/login',
@@ -19,15 +21,11 @@ const ENDPOINTS = {
 })
 export class AuthService {
 
-  apiUrl = environment.apiUrl;
-
-  /**
-   * @method constructor
-   * @param http {HttpClient}
-   */
+  
   constructor(
     private http: HttpClient,
     private authStore: AuthStore,
+    private snackbar: MatSnackBar
   ) { }
 
   /**
@@ -82,7 +80,7 @@ export class AuthService {
   showErrorFromBackend_login(errorResponse) {
     if (errorResponse.error.message != null) {
       if (errorResponse.error.message.startsWith("Bad credentials")) {
-        alert("Bad credentials");
+        this.showSnackbarError("Bad credentials");
       }
     }
   }
@@ -90,9 +88,16 @@ export class AuthService {
   showErrorFromBackend_register(errorResponse) {
     if (errorResponse.error != null) {
       if (errorResponse.error.startsWith("Username already exist")) {
-        alert("Username already exist");
+        this.showSnackbarError("Username already exist");
       }
     }
+  }
+
+  showSnackbarError(message) {
+    this.snackbar.openFromComponent(SnackbarComponent, {
+      data: message,
+      panelClass: ['snackbar-error']
+    });
   }
 
 }

@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthQuery } from 'src/app/shared/service';
 import { UserService } from 'src/app/shared/service/users.service';
+import { SnackbarComponent } from '../../common/snackbar/snackbar.component';
 
 @Component({
   selector: 'app-user-page',
@@ -26,13 +27,13 @@ export class UserPageComponent implements OnInit {
     private userService: UserService,
     private authQuery: AuthQuery,
     private router: Router,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private snackbar: MatSnackBar
     ) { }
 
   ngOnInit() {
-    this.commentsSub = this.userService.getComments(this.userId).subscribe((comments) => {
-      this.comments = comments;
-    })
+    
+    this.getComments();
 
     this.userSub = this.authQuery.user$.subscribe((user) => {
       this.user = user
@@ -41,6 +42,12 @@ export class UserPageComponent implements OnInit {
       }
     })
 
+  }
+
+  getComments() {
+    this.commentsSub = this.userService.getComments(this.userId).subscribe((comments) => {
+      this.comments = comments;
+    })
   }
 
   isThereAComment() {
@@ -55,7 +62,13 @@ export class UserPageComponent implements OnInit {
       content: this.newComment
     }
     this.newCommentSub = this.userService.addComment(addCommentDto).subscribe((commentDto) => {
+      this.snackbar.openFromComponent(SnackbarComponent, {
+        data: "You have successfully created a new comment",
+        panelClass: ['snackbar-success']
+      });
       console.log(commentDto);
+      this.getComments();
+      this.newComment = '';
     })
   }
 

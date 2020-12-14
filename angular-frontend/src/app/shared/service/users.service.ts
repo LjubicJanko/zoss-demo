@@ -42,7 +42,7 @@ export class UserService {
 
     return this.http.get<any>(ENDPOINTS.GET_COMMENTS).pipe(
       tap((data) => {
-        console.log(data.comments);
+        console.log(data);
       })
     )
   }
@@ -51,8 +51,7 @@ export class UserService {
     console.log(addComment);
     return this.http.post<any>(ENDPOINTS.ADD_COMMENTS, addComment).pipe(
       tap((data) => {
-        alert("success")
-        console.log(data.comments);
+        console.log(data);
       })
     )
   }
